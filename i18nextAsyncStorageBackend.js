@@ -1,8 +1,12 @@
 (function (global, factory) {
-  typeof exports === 'object' && typeof module !== 'undefined' ? module.exports = factory() :
-  typeof define === 'function' && define.amd ? define(factory) :
-  (global = typeof globalThis !== 'undefined' ? globalThis : global || self, global.i18nextAsyncStorageBackend = factory());
-})(this, (function () { 'use strict';
+  typeof exports === 'object' && typeof module !== 'undefined' ? module.exports = factory(require('@react-native-async-storage/async-storage')) :
+  typeof define === 'function' && define.amd ? define(['@react-native-async-storage/async-storage'], factory) :
+  (global = typeof globalThis !== 'undefined' ? globalThis : global || self, global.i18nextAsyncStorageBackend = factory(global.AsyncStorage));
+})(this, (function (AsyncStorage) { 'use strict';
+
+  function _interopDefaultLegacy (e) { return e && typeof e === 'object' && 'default' in e ? e : { 'default': e }; }
+
+  var AsyncStorage__default = /*#__PURE__*/_interopDefaultLegacy(AsyncStorage);
 
   function _classCallCheck(instance, Constructor) {
     if (!(instance instanceof Constructor)) {
@@ -43,16 +47,15 @@
     return obj;
   }
 
-  var AsyncStorage = require('@react-native-async-storage/async-storage') || {};
   var storage = {
     setItem: function setItem(key, value) {
-      if (AsyncStorage) {
-        return AsyncStorage.setItem(key, value);
+      if (AsyncStorage__default["default"]) {
+        return AsyncStorage__default["default"].setItem(key, value);
       }
     },
     getItem: function getItem(key, value) {
-      if (AsyncStorage) {
-        return AsyncStorage.getItem(key, value);
+      if (AsyncStorage__default["default"]) {
+        return AsyncStorage__default["default"].getItem(key, value);
       }
 
       return undefined;
@@ -88,9 +91,10 @@
       key: "read",
       value: function read(language, namespace, callback) {
         var _this = this;
+
         var nowMS = new Date().getTime();
 
-        if (!AsyncStorage) {
+        if (!AsyncStorage__default["default"]) {
           return callback(null, null);
         }
 
@@ -116,7 +120,7 @@
     }, {
       key: "save",
       value: function save(language, namespace, data) {
-        if (AsyncStorage) {
+        if (AsyncStorage__default["default"]) {
           data.i18nStamp = new Date().getTime(); // language version (if set)
 
           if (this.options.versions[language]) {

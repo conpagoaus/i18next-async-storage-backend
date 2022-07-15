@@ -1,14 +1,10 @@
-import {
-  babel
-} from '@rollup/plugin-babel';
-import uglify from "@lopatnov/rollup-plugin-uglify";
+import { babel } from '@rollup/plugin-babel';
+import uglify from '@lopatnov/rollup-plugin-uglify';
 import nodeResolve from 'rollup-plugin-node-resolve';
-import yargs from 'yargs'
-import {
-  hideBin
-} from 'yargs/helpers'
+import yargs from 'yargs';
+import { hideBin } from 'yargs/helpers';
 
-const argv = yargs(hideBin(process.argv)).argv
+const argv = yargs(hideBin(process.argv)).argv;
 
 const format = argv.format || argv.f || 'iife';
 const compress = argv.compact;
@@ -16,9 +12,12 @@ const compress = argv.compact;
 const babelOptions = {
   exclude: 'node_modules/**',
   presets: [
-    ["@babel/preset-env", {
-      modules: false
-    }]
+    [
+      '@babel/preset-env',
+      {
+        modules: false
+      }
+    ]
   ],
   babelrc: false,
   babelHelpers: 'bundled'
@@ -26,7 +25,8 @@ const babelOptions = {
 
 const moduleName = 'i18nextAsyncStorageBackend';
 
-const output = [{
+const output = [
+  {
     file: `dist/amd/i18nextAsyncStorageBackend${compress ? '.min' : ''}.js`,
     name: moduleName,
     format: 'amd'
@@ -40,7 +40,7 @@ const output = [{
     file: `dist/iife/i18nextAsyncStorageBackend${compress ? '.min' : ''}.js`,
     name: moduleName,
     format: 'iife'
-  },
+  }
 ];
 
 export default {
@@ -51,5 +51,7 @@ export default {
       jsnext: true
     })
   ].concat(compress ? uglify() : []),
+  globals: { '@react-native-async-storage/async-storage': 'AsyncStorage' },
+  external: ['@react-native-async-storage/async-storage'],
   output
 };
